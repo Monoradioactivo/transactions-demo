@@ -132,14 +132,18 @@ public class TransactionServiceImpl implements TransactionService {
 
         Collections.shuffle(transactions);
 
-        Transaction transaction = transactions.stream().findFirst().get();
+        Optional<Transaction> transaction = transactions.stream().findFirst();
+
+        if (transaction.isEmpty()) {
+            throw new ResourceNotFoundException("Transaction not found");
+        }
 
         return TransactionDTO.builder()
-                .id(transaction.getId())
-                .userId(transaction.getUser().getId())
-                .amount(transaction.getAmount())
-                .description(transaction.getDescription())
-                .date(transaction.getDate().toString())
+                .id(transaction.get().getId())
+                .userId(transaction.get().getUser().getId())
+                .amount(transaction.get().getAmount())
+                .description(transaction.get().getDescription())
+                .date(transaction.get().getDate().toString())
                 .build();
     }
 }
