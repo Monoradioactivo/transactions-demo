@@ -17,17 +17,18 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static mx.simio.transactionsdemo.api.util.AppConstant.*;
 
 public class TransactionServiceImplTest {
-    public static final Long USER_ID = 1L;
+    private static final Long USER_ID = 1L;
     private static final String TRANSACTION_UUID = "69370f68-2460-4e9d-a02e-9158c215576a";
-    public static final String TRANSACTION_DESCRIPTION = "Tacos El Marrano";
-    public static final String USER_NAME = "Adrián";
-    public static final BigDecimal TRANSACTION_AMOUNT = new BigDecimal(10);
-    public static final TransactionDTO TRANSACTION_DTO = new TransactionDTO();
-    public static final LocalDate TRANSACTION_DATE = LocalDate.now();
-    public static final Transaction TRANSACTION = new Transaction();
-    public static final User USER = new User();
+    private static final String TRANSACTION_DESCRIPTION = "Tacos El Marrano";
+    private static final String USER_NAME = "Adrián";
+    private static final BigDecimal TRANSACTION_AMOUNT = new BigDecimal(10);
+    private static final TransactionDTO TRANSACTION_DTO = new TransactionDTO();
+    private static final LocalDate TRANSACTION_DATE = LocalDate.now();
+    private static final Transaction TRANSACTION = new Transaction();
+    private static final User USER = new User();
 
     @Mock
     UserServiceImpl userService;
@@ -80,7 +81,7 @@ public class TransactionServiceImplTest {
     public void readUserTransactionsTransactionNotFoundTest() {
         Mockito.when(userService.readUserById(USER_ID)).thenReturn(USER);
         Mockito.when(transactionRepository.findByUserId(USER_ID)).thenReturn(Collections.emptyList())
-                .thenThrow(new ResourceNotFoundException("Transactions not found"));
+                .thenThrow(new ResourceNotFoundException(TRANSACTIONS_NOT_FOUND));
 
         assertThrows(ResourceNotFoundException.class, () -> transactionService.readUserTransactions(USER_ID));
     }
@@ -95,7 +96,7 @@ public class TransactionServiceImplTest {
     @Test
     public void readUserTransactionNotFoundTest() {
         Mockito.when(transactionRepository.findByUserIdAndId(USER_ID, UUID.fromString(TRANSACTION_UUID)))
-                .thenReturn(Optional.empty()).thenThrow(new ResourceNotFoundException("Transaction not found"));
+                .thenReturn(Optional.empty()).thenThrow(new ResourceNotFoundException(TRANSACTION_NOT_FOUND));
 
         assertThrows(ResourceNotFoundException.class, () -> transactionService.readUserTransaction(USER_ID, TRANSACTION_UUID));
     }
@@ -112,7 +113,7 @@ public class TransactionServiceImplTest {
     public void sumUserTransactionsTestWithNoTransactions() {
         Mockito.when(userService.readUserById(USER_ID)).thenReturn(USER);
         Mockito.when(transactionRepository.findByUserId(USER_ID)).thenReturn(Collections.emptyList())
-                .thenThrow(new ResourceNotFoundException("Transactions not found"));
+                .thenThrow(new ResourceNotFoundException(TRANSACTIONS_NOT_FOUND));
 
         assertThrows(ResourceNotFoundException.class, () -> transactionService.sumUserTransactions(USER_ID));
     }
@@ -127,7 +128,7 @@ public class TransactionServiceImplTest {
     @Test
     public void readRandomTransactionNotFoundTest() {
         Mockito.when(transactionRepository.findAll()).thenReturn(Collections.emptyList())
-                .thenThrow(new ResourceNotFoundException("Transaction not found"));
+                .thenThrow(new ResourceNotFoundException(TRANSACTION_NOT_FOUND));
 
         assertThrows(ResourceNotFoundException.class, () -> transactionService.readRandomTransaction());
     }

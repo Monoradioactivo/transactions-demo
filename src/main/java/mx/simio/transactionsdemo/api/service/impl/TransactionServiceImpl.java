@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
+import static mx.simio.transactionsdemo.api.util.AppConstant.*;
+
 @Slf4j
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -60,7 +62,7 @@ public class TransactionServiceImpl implements TransactionService {
         List<Transaction> transactions = transactionRepository.findByUserId(userFromDb.getId());
 
         if (transactions.isEmpty()) {
-            throw new ResourceNotFoundException("Transactions not found");
+            throw new ResourceNotFoundException(TRANSACTION_NOT_FOUND);
         }
 
         Transaction.sortTransactionsChronologically(transactions);
@@ -88,7 +90,7 @@ public class TransactionServiceImpl implements TransactionService {
         Optional<Transaction> transactionFromDb = transactionRepository.findByUserIdAndId(userId, UUID.fromString(transactionId));
 
         if (transactionFromDb.isEmpty()) {
-            throw new ResourceNotFoundException("Transaction not found");
+            throw new ResourceNotFoundException(TRANSACTION_NOT_FOUND);
         }
 
         return TransactionDTO.builder()
@@ -114,7 +116,7 @@ public class TransactionServiceImpl implements TransactionService {
         List<Transaction> transactions = transactionRepository.findByUserId(userFromDb.getId());
 
         if (transactions.isEmpty()) {
-            throw new ResourceNotFoundException("Transactions not found");
+            throw new ResourceNotFoundException(TRANSACTIONS_NOT_FOUND);
         }
 
         BigDecimal sum = transactions.stream().map(Transaction::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -135,7 +137,7 @@ public class TransactionServiceImpl implements TransactionService {
         Optional<Transaction> transaction = transactions.stream().findFirst();
 
         if (transaction.isEmpty()) {
-            throw new ResourceNotFoundException("Transaction not found");
+            throw new ResourceNotFoundException(TRANSACTION_NOT_FOUND);
         }
 
         return TransactionDTO.builder()
