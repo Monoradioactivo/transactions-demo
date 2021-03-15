@@ -50,10 +50,5 @@ public class Transaction implements Serializable {
         transactions.sort(Comparator.comparing(Transaction::getDate));
     }
 
-    @Override
-    public String toString() {
-        return "Transaction{}";
-    }
-
     private static final long serialVersionUID = 8362215857577388142L;
 }

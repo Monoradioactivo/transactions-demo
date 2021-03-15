@@ -14,11 +14,11 @@ import java.math.BigDecimal;
 public class Sum {
     @JsonProperty("user_id")
     private Long userId;
-    private BigDecimal sum;
+    private BigDecimal total;
 
     @Builder
-    public Sum(Long userId, BigDecimal sum) {
+    public Sum(Long userId, BigDecimal total) {
         this.userId = userId;
-        this.sum = sum;
+        this.total = total;
     }
 }

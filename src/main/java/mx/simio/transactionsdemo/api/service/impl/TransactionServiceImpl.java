@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -110,8 +109,10 @@ public class TransactionServiceImpl implements TransactionService {
     public List<Report> readUserTransactionsReport(Long userId) {
         List<Transaction> transactionsFromUser = transactionRepository.findByUserId(userId);
 
-        if (transactionsFromUser.isEmpty()) {
-            throw new ResourceNotFoundException(TRANSACTIONS_NOT_FOUND);
+        Optional<Transaction> firstTransaction = transactionsFromUser.stream().findFirst();
+
+        if (firstTransaction.isEmpty()) {
+            throw new ResourceNotFoundException(TRANSACTION_NOT_FOUND);
         }
 
         AtomicReference<LocalDate> weekStartDate =
@@ -177,7 +178,7 @@ public class TransactionServiceImpl implements TransactionService {
         BigDecimal sum = transactions.stream().map(Transaction::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return Sum.builder()
-                .sum(sum)
+                .total(sum)
                 .userId(userFromDb.getId())
                 .build();
     }

@@ -20,7 +20,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static mx.simio.transactionsdemo.api.util.AppConstant.*;
 
-public class TransactionServiceImplTest {
+class TransactionServiceImplTest {
     private static final Long USER_ID = 1L;
     private static final String TRANSACTION_UUID = "69370f68-2460-4e9d-a02e-9158c215576a";
     private static final String TRANSACTION_DESCRIPTION = "Tacos El Marrano";

@@ -15,7 +15,7 @@ import static mx.simio.transactionsdemo.api.util.AppConstant.USER_NOT_FOUND;
 
 import java.util.Optional;
 
-public class UserServiceImplTest {
+class UserServiceImplTest {
     private static final User USER = new User();
     private static final Long USER_ID = 1L;
     private static final String USER_NAME = "Adrián";
@@ -35,13 +35,16 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void readUserByIdTest() {
+    void readUserByIdTest() {
         Mockito.when(userRepository.findById(USER_ID)).thenReturn(Optional.of(USER));
-        userService.readUserById(USER_ID);
+
+        final User user = userService.readUserById(USER_ID);
+
+        assertNotNull(user);
     }
 
     @Test
-    public void readUserByIdNotFoundTest() {
+    void readUserByIdNotFoundTest() {
         Mockito.when(userRepository.findById(USER_ID)).thenReturn(Optional.empty()).thenThrow(new ResourceNotFoundException(USER_NOT_FOUND));
         assertThrows(ResourceNotFoundException.class, () -> userService.readUserById(USER_ID));
     }

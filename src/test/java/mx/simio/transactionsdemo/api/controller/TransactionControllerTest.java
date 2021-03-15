@@ -21,7 +21,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TransactionControllerTest {
+class TransactionControllerTest {
     private static final Long USER_ID = 1L;
     private static final String TRANSACTION_UUID = "69370f68-2460-4e9d-a02e-9158c215576a";
     private static final List<TransactionDTO> TRANSACTIONS_DTO = new ArrayList<>();
@@ -45,7 +45,7 @@ public class TransactionControllerTest {
         TRANSACTION_DTO.setDescription("Tacos El Marrano");
         TRANSACTION_DTO.setUserId(1L);
 
-        SUM.setSum(new BigDecimal(100));
+        SUM.setTotal(new BigDecimal(100));
         SUM.setUserId(USER_ID);
 
         Mockito.when(transactionService.readUserTransactions(USER_ID)).thenReturn(TRANSACTIONS_DTO);
@@ -56,50 +56,51 @@ public class TransactionControllerTest {
     }
 
     @Test
-    public void createTransactionTest() {
+    void createTransactionTest() {
         final ResponseEntity<TransactionDTO> response = transactionController.createTransaction(USER_ID, TRANSACTION_DTO);
-        assertEquals(response.getStatusCode(), HttpStatus.CREATED);
-        assertEquals(response.getStatusCodeValue(), HttpStatus.CREATED.value());
-        assertEquals(response.getBody(), TRANSACTION_DTO);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(HttpStatus.CREATED.value(), response.getStatusCodeValue());
+        assertEquals(TRANSACTION_DTO, response.getBody());
     }
-    
+
     @Test
-    public void readUserTransactionsTest() {
+    void readUserTransactionsTest() {
         final ResponseEntity<List<TransactionDTO>> response = transactionController.readUserTransactions(USER_ID);
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getBody(), TRANSACTIONS_DTO);
-        assertEquals(response.getStatusCodeValue(), HttpStatus.OK.value());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(TRANSACTIONS_DTO, response.getBody());
+        assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
     }
 
     @Test
-    public void sumUserTransactionsTest() {
+    void sumUserTransactionsTest() {
         final ResponseEntity<Sum> response = transactionController.sumUserTransactions(USER_ID);
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getStatusCodeValue(), HttpStatus.OK.value());
-        assertEquals(response.getBody(), SUM);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
+        assertEquals(SUM, response.getBody());
     }
 
     @Test
-    public void readUserTransactionTest() {
+    void readUserTransactionTest() {
         final ResponseEntity<TransactionDTO> response = transactionController.readUserTransaction(USER_ID, TRANSACTION_UUID);
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getStatusCodeValue(), HttpStatus.OK.value());
-        assertEquals(response.getBody(), TRANSACTION_DTO);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
+        assertEquals(TRANSACTION_DTO, response.getBody());
     }
 
     @Test
-     public void readUserTransactionsReportTest() {
+    void readUserTransactionsReportTest() {
         final ResponseEntity<List<Report>> response = transactionController.readUserTransactionsReport(USER_ID);
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getStatusCodeValue(), HttpStatus.OK.value());
-        assertEquals(response.getBody(), LIST_REPORT);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
+        assertEquals(LIST_REPORT, response.getBody());
     }
 
     @Test
-    public void readRandomTransactionTest() {
+    void readRandomTransactionTest() {
         final ResponseEntity<TransactionDTO> response = transactionController.readRandomTransaction();
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(response.getStatusCodeValue(), HttpStatus.OK.value());
-        assertEquals(response.getBody(), TRANSACTION_DTO);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.OK.value(), response.getStatusCodeValue());
+        assertEquals(TRANSACTION_DTO, response.getBody());
     }
 }
