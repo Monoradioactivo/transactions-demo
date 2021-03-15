@@ -2,6 +2,7 @@ package mx.simio.transactionsdemo.api.service.impl;
 
 import mx.simio.transactionsdemo.api.dto.TransactionDTO;
 import mx.simio.transactionsdemo.api.exception.ResourceNotFoundException;
+import mx.simio.transactionsdemo.api.model.Report;
 import mx.simio.transactionsdemo.api.model.entity.Transaction;
 import mx.simio.transactionsdemo.api.model.entity.User;
 import mx.simio.transactionsdemo.api.repository.TransactionRepository;
@@ -29,6 +30,7 @@ public class TransactionServiceImplTest {
     private static final LocalDate TRANSACTION_DATE = LocalDate.now();
     private static final Transaction TRANSACTION = new Transaction();
     private static final User USER = new User();
+    private static final Report REPORT = new Report();
 
     @Mock
     UserServiceImpl userService;
@@ -56,6 +58,11 @@ public class TransactionServiceImplTest {
 
         USER.setId(USER_ID);
         USER.setName(USER_NAME);
+
+        REPORT.setUserId(USER_ID);
+        REPORT.setQuantity(2);
+        REPORT.setWeekFinishDate("2020-03-25 MONDAY");
+        REPORT.setWeekFinishDate("2020-03-25 THURSDAY");
     }
 
     @Test

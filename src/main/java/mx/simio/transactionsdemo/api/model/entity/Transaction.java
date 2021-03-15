@@ -31,6 +31,7 @@ public class Transaction implements Serializable {
     private LocalDate date;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
     public Transaction(BigDecimal amount, String description, LocalDate date) {
         this.amount = amount;
         this.description = description;
@@ -47,6 +48,11 @@ public class Transaction implements Serializable {
 
     public static void sortTransactionsChronologically(List<Transaction> transactions) {
         transactions.sort(Comparator.comparing(Transaction::getDate));
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{}";
     }
 
     private static final long serialVersionUID = 8362215857577388142L;
