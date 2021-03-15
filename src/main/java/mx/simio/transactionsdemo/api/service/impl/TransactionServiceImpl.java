@@ -116,9 +116,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         AtomicReference<LocalDate> weekStartDate =
-                new AtomicReference<>(transactionsFromUser.stream()
-                        .findFirst()
-                        .get().getDate()
+                new AtomicReference<>(firstTransaction.get().getDate()
                         .with(TemporalAdjusters.previous(DayOfWeek.MONDAY)));
         AtomicReference<LocalDate> weekFinishDate =
                 new AtomicReference<>(weekStartDate.get().with(TemporalAdjusters.next(DayOfWeek.SUNDAY)));

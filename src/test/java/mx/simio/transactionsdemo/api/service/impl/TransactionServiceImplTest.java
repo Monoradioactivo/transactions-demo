@@ -3,6 +3,7 @@ package mx.simio.transactionsdemo.api.service.impl;
 import mx.simio.transactionsdemo.api.dto.TransactionDTO;
 import mx.simio.transactionsdemo.api.exception.ResourceNotFoundException;
 import mx.simio.transactionsdemo.api.model.Report;
+import mx.simio.transactionsdemo.api.model.Sum;
 import mx.simio.transactionsdemo.api.model.entity.Transaction;
 import mx.simio.transactionsdemo.api.model.entity.User;
 import mx.simio.transactionsdemo.api.repository.TransactionRepository;
@@ -66,14 +67,17 @@ class TransactionServiceImplTest {
     }
 
     @Test
-    public void createTransactionTest() {
+    void createTransactionTest() {
         Mockito.when(userService.readUserById(USER_ID)).thenReturn(USER);
         Mockito.when(transactionRepository.save(Mockito.any(Transaction.class))).thenReturn(TRANSACTION);
-        transactionService.createTransaction(USER_ID, TRANSACTION_DTO);
+
+        final TransactionDTO transaction = transactionService.createTransaction(USER_ID, TRANSACTION_DTO);
+
+        assertNotNull(transaction);
     }
 
     @Test
-    public void readUserTransactionsTest() {
+    void readUserTransactionsTest() {
         Mockito.when(userService.readUserById(USER_ID)).thenReturn(USER);
         Mockito.when(transactionRepository.findByUserId(USER_ID)).thenReturn(Collections.singletonList(TRANSACTION));
 
@@ -81,11 +85,11 @@ class TransactionServiceImplTest {
 
         assertNotNull(response);
         assertFalse(response.isEmpty());
-        assertEquals(response.size(), 1);
+        assertEquals(1, response.size());
     }
 
     @Test
-    public void readUserTransactionsTransactionNotFoundTest() {
+    void readUserTransactionsTransactionNotFoundTest() {
         Mockito.when(userService.readUserById(USER_ID)).thenReturn(USER);
         Mockito.when(transactionRepository.findByUserId(USER_ID)).thenReturn(Collections.emptyList())
                 .thenThrow(new ResourceNotFoundException(TRANSACTIONS_NOT_FOUND));
@@ -94,14 +98,17 @@ class TransactionServiceImplTest {
     }
 
     @Test
-    public void readUserTransactionTest() {
+    void readUserTransactionTest() {
         Mockito.when(transactionRepository.findByUserIdAndId(USER_ID, UUID.fromString(TRANSACTION_UUID)))
                 .thenReturn(Optional.of(TRANSACTION));
-        transactionService.readUserTransaction(USER_ID, TRANSACTION_UUID);
+
+        final TransactionDTO transaction = transactionService.readUserTransaction(USER_ID, TRANSACTION_UUID);
+
+        assertNotNull(transaction);
     }
 
     @Test
-    public void readUserTransactionNotFoundTest() {
+    void readUserTransactionNotFoundTest() {
         Mockito.when(transactionRepository.findByUserIdAndId(USER_ID, UUID.fromString(TRANSACTION_UUID)))
                 .thenReturn(Optional.empty()).thenThrow(new ResourceNotFoundException(TRANSACTION_NOT_FOUND));
 
@@ -109,15 +116,17 @@ class TransactionServiceImplTest {
     }
 
     @Test
-    public void sumUserTransactionsTest() {
+    void sumUserTransactionsTest() {
         Mockito.when(userService.readUserById(USER_ID)).thenReturn(USER);
         Mockito.when(transactionRepository.findByUserId(USER_ID)).thenReturn(Collections.singletonList(TRANSACTION));
 
-        transactionService.sumUserTransactions(USER_ID);
+        final Sum userTransactionsSum = transactionService.sumUserTransactions(USER_ID);
+
+        assertNotNull(userTransactionsSum);
     }
 
     @Test
-    public void sumUserTransactionsTestWithNoTransactions() {
+    void sumUserTransactionsTestWithNoTransactions() {
         Mockito.when(userService.readUserById(USER_ID)).thenReturn(USER);
         Mockito.when(transactionRepository.findByUserId(USER_ID)).thenReturn(Collections.emptyList())
                 .thenThrow(new ResourceNotFoundException(TRANSACTIONS_NOT_FOUND));
@@ -126,14 +135,17 @@ class TransactionServiceImplTest {
     }
 
     @Test
-    public void readRandomTransactionTest() {
+    void readRandomTransactionTest() {
         Mockito.when(transactionRepository.findAll()).thenReturn(Collections.singletonList(TRANSACTION));
 
-        transactionService.readRandomTransaction();
+        final TransactionDTO transaction = transactionService.readRandomTransaction();
+
+        assertNotNull(transaction);
+        assertEquals(TRANSACTION_DTO, transaction);
     }
 
     @Test
-    public void readRandomTransactionNotFoundTest() {
+    void readRandomTransactionNotFoundTest() {
         Mockito.when(transactionRepository.findAll()).thenReturn(Collections.emptyList())
                 .thenThrow(new ResourceNotFoundException(TRANSACTION_NOT_FOUND));
 
